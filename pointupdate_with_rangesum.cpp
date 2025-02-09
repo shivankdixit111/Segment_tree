@@ -471,7 +471,7 @@ class Segtree{
             st[index] = st[2*index+1] + st[2*index+2];
         }
 
-        void pointupdate(int low, int high, int index, int pos, int value)
+        void update(int low, int high, int index, int pos, int value)
         { // time complexity--> O(log n)
 
             if (low == high)
@@ -482,14 +482,14 @@ class Segtree{
             int mid = (low + high) >> 1;
 
             if (pos >= low and pos <= mid)
-                pointupdate(low, mid, 2 * index + 1, pos, value);
+                update(low, mid, 2 * index + 1, pos, value);
             else
-                pointupdate(mid + 1, high, 2 * index + 2, pos, value);
+                update(mid + 1, high, 2 * index + 2, pos, value);
 
             st[index] = (st[2 * index + 1] + st[2 * index + 2]);
         }
 
-        int rangeSum(int low, int high, int index, int l, int r)
+        int query(int low, int high, int index, int l, int r)
         { // time complexity--> O(log n)
             // complete overlap       l........low.........high........r
             if (low >= l and high <= r)
@@ -500,8 +500,8 @@ class Segtree{
                 return 0;
 
             int mid = (low + high) >> 1;
-            int leftanswer = rangeSum(low, mid, 2 * index + 1, l, r);
-            int rightanswer  =rangeSum(mid + 1, high, 2 * index + 2, l, r);
+            int leftanswer = query(low, mid, 2 * index + 1, l, r);
+            int rightanswer  =query(mid + 1, high, 2 * index + 2, l, r);
         
             return (leftanswer + rightanswer);
         } 
@@ -529,14 +529,14 @@ int solve() {
             cin>>pos>>val;
             pos--;
 
-            sg.pointupdate(0,n-1,0,pos,val);
+            sg.update(0,n-1,0,pos,val);
         } else {
             // rangesum
             int l,r;
             cin>>l>>r;
             l--; r--;
 
-            cout<< sg.rangeSum(0,n-1,0,l,r) <<endl;
+            cout<< sg.query(0,n-1,0,l,r) <<endl;
         }
     }    
 
