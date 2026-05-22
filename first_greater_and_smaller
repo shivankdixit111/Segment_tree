@@ -1,0 +1,56 @@
+ 
+class Segtree {
+    public:
+        vector<int> stmx; 
+        vector<int> stmn; 
+        Segtree(int n) {
+            stmx.resize(4*n, INT_MIN); 
+            stmn.resize(4*n, INT_MAX);  
+        }
+
+       void update(int low, int high, int idx, int pos, int val) {
+           if(low == high) { 
+              stmx[idx] = val;
+              stmn[idx] = val; 
+              return;
+           }
+           int mid = (low + high)>>1;
+           if(pos <= mid) {
+              update(low, mid, 2*idx+1, pos, val);
+           } else {
+              update(mid+1, high, 2*idx+2, pos, val);
+           }
+           stmx[idx] = max(stmx[2*idx+1], stmx[2*idx+2]); 
+           stmn[idx] = min(stmn[2*idx+1], stmn[2*idx+2]); 
+       }
+    
+       /* Returns the leftmost index in [l..r] whose value is > val */
+       int query_first_greater(int low, int high, int idx, int l, int r, int val) {  //(leftmost greater)
+           // l..low..high..r
+           if(high<l or r<low) return INT_MAX;
+           if(stmx[idx] <= val) return INT_MAX; 
+           if(low==high) return low;
+           
+           int mid = (low + high)>>1;
+           int index = query_first_greater(low, mid, 2*idx+1, l, r, val);
+           if(index==INT_MAX) {
+               index = query_first_greater(mid+1, high, 2*idx+2, l, r, val);
+           } 
+           return index;
+       } 
+
+        /* Returns the leftmost index in [l..r] whose value is < val */
+       int query_first_smaller(int low, int high, int idx, int l, int r, int val) {   //(leftmost smaller)
+           // l..low..high..r
+           if(high<l or r<low) return INT_MAX;
+           if(stmn[idx] >= val) return INT_MAX; 
+           if(low==high) return low;
+           
+           int mid = (low + high)>>1;
+           int index = query_first_smaller(low, mid, 2*idx+1, l, r, val);
+           if(index==INT_MAX) {
+               index = query_first_smaller(mid+1, high, 2*idx+2, l, r, val);
+           } 
+           return index;
+       } 
+};
