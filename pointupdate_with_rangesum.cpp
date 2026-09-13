@@ -1,10 +1,12 @@
 
 class Segtree{
     public: 
-        vector<int> st;
+         vector<int> st;
+        int n;
 
         Segtree(int n) {
             st.resize(4*n);
+            this->n = n;
         }
         void build(vector<int> &arr, int low, int end, int index)
         { // time complexity--> O(n)
