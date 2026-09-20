@@ -58,7 +58,11 @@
         
             return max(leftanswer , rightanswer);
         } 
-        int query(int l, int r) return query2(0,n-1,0,l,r);
-        void update(int pos, int val) return update2(0,n-1,0,pos,val);
+        int query(int l, int r) {
+         return query2(0,n-1,0,l,r);
+        }
+        void update(int pos, int val) {
+         return update2(0,n-1,0,pos,val);
+        }
 }; 
  
